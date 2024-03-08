@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "SocialMediaApp:build:production"
+              "buildTarget": "SocialMediaApp:build:production"
             },
             "development": {
-              "browserTarget": "SocialMediaApp:build:development"
+              "buildTarget": "SocialMediaApp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "SocialMediaApp:build"
+            "buildTarget": "SocialMediaApp:build"
           }
         },
         "test": {
