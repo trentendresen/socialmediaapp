@@ -1,0 +1,88 @@
+.form-body {
+  width: 400px;
+  display: flex;
+  padding: 20px; /* Add padding to create space around the form */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 8px; /* Add border-radius for rounded corners */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add box shadow for depth effect */
+  background-color: #121212;
+  flex-direction: column;
+}
+
+.loginContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.label {
+  color: whitesmoke;
+}
+
+.nav-container button {
+  color: darkgrey;
+}
+
+.nav-container button.active {
+  color: darkgrey;
+  text-decoration: underline;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.ng-untouched {
+  width: 100%;
+}
+/* Style for form group */
+.form-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
+.imageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Style for form labels */
+label {
+  color: darkgrey;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style for form inputs */
+/*  */
+.profilePic {
+  color: whitesmoke;
+}
+
+img {
+  height: 50%;
+  width: 50%;
+}
+
+/* Style for submit button */
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: center;
+}
+span {
+  color: red;
+}
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}

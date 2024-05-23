@@ -1,0 +1,69 @@
+<div class="container">
+  <!-- People section -->
+  <ng-container *ngIf="filter === 'top' || filter === 'people'">
+    <div class="infoContainer" [class.isLoading]="!filteredUsers">
+      <div *ngIf="filteredUsers; else load">
+        <div *ngIf="filteredUsers.length; else noResults">
+          <h2>People</h2>
+          <div *ngFor="let user of filteredUsers.slice(0, 6); let i = index">
+            <div class="userContainer">
+              <img [src]="user.photoUrl" />
+              <p>{{ user.firstName }} {{ user.lastName }}</p>
+              <div class="addFriendContainer">
+                <button
+                  (click)="
+                    userFromState?.friendRequests?.includes(user.id)
+                      ? cancelFriendRequest(
+                          user.id,
+                          userFromState,
+                          user,
+                          userFromState?.id
+                        )
+                      : sendFriendRequest(
+                          user.id,
+                          userFromState,
+                          user,
+                          userFromState?.id
+                        )
+                  "
+                >
+                  {{
+                    userFromState?.friendRequests?.includes(user.id)
+                      ? "Cancel request"
+                      : "Add friend"
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="showMoreContainer">
+            <button>Show all</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Posts section -->
+  <ng-container *ngIf="filter === 'top' || filter === 'posts'">
+    <div [class.isLoading]="!filteredUsers" class="infoContainer">
+      <div *ngIf="filteredPosts; else load">
+        <div *ngIf="filteredPosts.length; else noResults">
+          <h2>Posts</h2>
+          <app-posts
+            [userData]="userFromState"
+            [combinedPosts]="filteredPosts"
+          ></app-posts>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #load>
+  <mat-spinner style="justify-self: center; align-self: center"></mat-spinner>
+</ng-template>
+
+<ng-template class="noResults" #noResults>
+  <div class="noResults">No results found for this search</div>
+</ng-template>

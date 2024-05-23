@@ -1,0 +1,66 @@
+/* scrolling-view.component.css */
+
+.scrolling-container {
+  width: 100%; /* Set the width of the container */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 80%;
+  max-width: 80%;
+}
+
+.icon {
+  color: gray;
+}
+
+.liked {
+  color: red;
+}
+
+.cardInfoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.commentsContainer {
+  margin-left: auto;
+  display: flex;
+  margin-right: 3%;
+}
+
+.commentsContainer:hover {
+  margin-left: auto;
+  display: flex;
+  margin-right: 3%;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.cardContainer {
+  align-self: center;
+  border: 2px solid gray;
+  margin-bottom: 5%;
+  min-width: 100%;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+.name-card:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

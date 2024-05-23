@@ -1,0 +1,73 @@
+.container {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  height: auto;
+  flex-wrap: wrap;
+  margin-top: 10%;
+  flex-direction: column;
+  align-content: center;
+}
+
+.infoContainer {
+  border-radius: 10px;
+  height: auto;
+  width: 80%;
+  background-color: #ffffff;
+}
+
+.infoContainer:last-child {
+  margin-top: 10%;
+}
+
+.infoContainer.isLoading {
+  display: grid;
+  background-color: #f0f2f5;
+}
+
+h2 {
+  padding: 10px;
+}
+
+.noResults {
+  display: flex;
+  justify-content: center;
+}
+
+.userContainer {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+img {
+  height: 10%;
+  width: 10%;
+}
+
+p {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.addFriendContainer {
+  margin-left: auto;
+  margin-right: 5%;
+}
+
+button {
+  color: #005fc8;
+  border-radius: 10px;
+  border-color: #e0eaf4;
+  background-color: #e0eaf4;
+  padding: 10px;
+}
+
+button:last-child {
+  margin-bottom: 5%;
+}
+
+.showMoreContainer {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Hi, {{ data.user.firstName }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="commentForm">
+    <textarea
+      placeholder="Leave a comment"
+      class="yuur"
+      formControlName="content"
+      type="text"
+    ></textarea>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button (click)="onCreateComment(commentForm.value.content)" mat-button>
+    Submit
+  </button>
+</mat-dialog-actions>

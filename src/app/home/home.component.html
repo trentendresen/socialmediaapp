@@ -1,2 +1,14 @@
-<p>home works!</p>
-<img src="{{ imageLogo }}" alt="Logo" />
+<div
+  class="container"
+  *ngIf="{
+    userData: userData$ | async,
+    usersPosts: usersPosts$ | async,
+    friendsPosts: friendsPost$ | async
+  } as data"
+>
+  <app-create-posts [userData]="data.userData"></app-create-posts>
+  <app-posts
+    [userData]="data.userData"
+    [combinedPosts]="combinePosts(data.usersPosts, data.friendsPosts)"
+  ></app-posts>
+</div>

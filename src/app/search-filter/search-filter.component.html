@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="searchResultsContainer">
+    <p class="pMobile">Search Results For {{ searchTerm }}</p>
+    <p class="pWeb">Search Results For</p>
+    <mat-divider style="margin-right: 5%"></mat-divider>
+    <div class="subHeaderWeb" mat-subheader>Filters</div>
+  </div>
+
+  <div class="sideNavContainer">
+    <div
+      (click)="changeFilter('top')"
+      [class.active]="this.filter === 'top'"
+      class="sideNavItemContainer"
+    >
+      <mat-icon class="icon">portrait</mat-icon>
+      <span class="listSubtitle">All</span>
+    </div>
+    <div
+      (click)="changeFilter('posts')"
+      [class.active]="this.filter === 'posts'"
+      class="sideNavItemContainer"
+    >
+      <mat-icon class="icon">local_post_office</mat-icon>
+      <span class="listSubtitle">Posts</span>
+    </div>
+    <div
+      (click)="changeFilter('people')"
+      [class.active]="this.filter === 'people'"
+      class="sideNavItemContainer"
+    >
+      <mat-icon class="icon">account_circle</mat-icon>
+      <span class="listSubtitle">People</span>
+    </div>
+  </div>
+</div>

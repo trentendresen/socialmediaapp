@@ -1,0 +1,12 @@
+textarea {
+  border: 2px solid gray;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.mat-mdc-dialog-container {
+  width: 50%;
+}

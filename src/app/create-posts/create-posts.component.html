@@ -1,0 +1,18 @@
+<div class="container">
+  <img src="{{ userData?.photoUrl }}" />
+  <form [formGroup]="postsForm" (ngSubmit)="onCreatePost(postsForm.value)">
+    <textarea
+      placeholder="What's on your mind, {{ userData?.firstName }}"
+      class="yuur"
+      formControlName="content"
+      type="text"
+    ></textarea>
+  </form>
+  <button
+    (click)="onCreatePost(postsForm.value.content)"
+    mat-icon-button
+    aria-label="Send post button"
+  >
+    <mat-icon>send</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>
+  {{ data.post.author.firstName }} {{ data.post.author.lastName }}'s Post
+</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div class="cardContainer">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <img mat-card-avatar src="{{ data.post.author.photoUrl }}" />
+        <mat-card-title
+          >{{ data.post.author.firstName }}
+          {{ data.post.author.lastName }}</mat-card-title
+        >
+        <mat-card-subtitle>{{
+          formatCreatedAtDate(data.post.createdAt)
+        }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          {{ data.post.content }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="cardInfoContainer">
+          <div class="iconContainer">
+            <span
+              class="material-icons md-18"
+              [class.liked]="isLiked(data.post)"
+            >
+              {{ isLiked(data.post) ? "favorite" : "favorite_border" }}
+            </span>
+
+            {{ data.post.likes.length }}
+          </div>
+          <div class="commentsContainer">
+            {{ data.post.comments.length }} comments
+          </div>
+        </div>
+      </mat-card-actions>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button (click)="toggleLike(data.post)" mat-button>
+          {{ isLiked(data.post) ? "REMOVE LIKE" : "LIKE" }}
+        </button>
+        <button mat-button>COMMENT</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="commentScroll">
+    <div
+      *ngFor="let comment of data.post.comments; let i = index"
+      class="content"
+    >
+      <div class="commentContainer">
+        <img
+          class="avatar"
+          mat-card-avatar
+          src="{{ comment.author.photoUrl }}"
+        />
+        <div class="contentContainer">
+          <p>{{ comment.author.firstName }} {{ comment.author.lastName }}</p>
+          <p>{{ comment.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="actionContainer">
+    <div>
+      <form [formGroup]="commentForm">
+        <textarea
+          placeholder="Leave a comment"
+          class="yuur"
+          formControlName="content"
+          type="text"
+        ></textarea>
+      </form>
+    </div>
+    <div>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button (click)="onCreateComment(commentForm.value.content)" mat-button>
+        Submit
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>

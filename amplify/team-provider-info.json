@@ -10,6 +10,14 @@
       "StackName": "amplify-socialmediaapp-dev-201218",
       "StackId": "arn:aws:cloudformation:us-east-1:220204137650:stack/amplify-socialmediaapp-dev-201218/4b0e4700-dcf1-11ee-95e3-0a798fb3f59d",
       "AmplifyAppId": "d3d66p0lsrbgrt"
+    },
+    "categories": {
+      "auth": {
+        "socialmediaapp98be0a54": {}
+      },
+      "api": {
+        "socialmediaapp": {}
+      }
     }
   }
 }

@@ -1,2 +1,203 @@
-<p>login works!</p>
-<h2>ass</h2>
+<div class="loginContainer">
+  <div class="form-body">
+    <div class="nav-container">
+      <button
+        mat-button
+        [class.active]="loginOrSignup === 'Login'"
+        (click)="onButtonClick('Login')"
+      >
+        Login
+      </button>
+      <button
+        mat-button
+        [class.active]="loginOrSignup === 'Sign Up'"
+        (click)="onButtonClick('Sign Up')"
+      >
+        Create Account
+      </button>
+    </div>
+    <ng-container *ngIf="!nextStep; else codeInput">
+      <div *ngIf="loginOrSignup === 'Sign Up'; else login">
+        <form
+          [formGroup]="signUpUserForm"
+          (ngSubmit)="onSignUpUser(signUpUserForm.value)"
+        >
+          <mat-form-field class="form-group">
+            <mat-label for="username">Username:</mat-label>
+            <input
+              matInput
+              id="username"
+              type="text"
+              formControlName="username"
+              autocomplete="off"
+            />
+            <span
+              *ngIf="signUpUserForm.controls['username']?.errors && submitted"
+              >This Field is required
+            </span>
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label for="firstName">First Name:</mat-label>
+            <input
+              matInput
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              autocomplete="off"
+            />
+            <span
+              *ngIf="signUpUserForm.controls['firstName']?.errors && submitted"
+              >This Field is required
+            </span>
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label for="lastName">Last Name:</mat-label>
+            <input
+              matInput
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              autocomplete="off"
+            />
+            <span
+              *ngIf="signUpUserForm.controls['lastName']?.errors && submitted"
+              >This Field is required
+            </span>
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label>Email:</mat-label>
+            <input
+              matInput
+              id="email"
+              type="text"
+              formControlName="email"
+              autocomplete="off"
+            />
+
+            <span *ngIf="signUpUserForm.controls['email']?.errors && submitted"
+              >This field is required</span
+            >
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              id="password"
+              type="{{ showPassword ? 'text' : 'password' }}"
+              formControlName="password"
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              matSuffix
+              mat-icon-button
+              aria-label="Toggle password visibility"
+              (click)="togglePasswordVisibility()"
+            >
+              <mat-icon>{{
+                showPassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            <span
+              *ngIf="
+                signUpUserForm.controls['password']?.errors &&
+                signUpUserForm.controls['password']?.value.length > 0
+              "
+              >Password must be 6 characters or more
+            </span>
+          </mat-form-field>
+
+          <mat-form-field class="form-group">
+            <mat-label>Confirm Password</mat-label>
+            <input
+              matInput
+              id="confirmPassword"
+              type="{{ showConfirmPassword ? 'text' : 'password' }}"
+              formControlName="confirmPassword"
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              matSuffix
+              mat-icon-button
+              aria-label="Toggle password visibility"
+              (click)="toggleConfirmPasswordVisibility()"
+            >
+              <mat-icon>{{
+                showConfirmPassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+
+            <span
+              *ngIf="
+                signUpUserForm.controls['confirmPassword']?.errors &&
+                signUpUserForm.controls['confirmPassword']?.value.length > 0
+              "
+              >Password must match</span
+            >
+          </mat-form-field>
+          <span class="profilePic">Choose a profile picture (Optional)</span>
+          <input
+            accept="image/*"
+            type="file"
+            (change)="onFileSelected($event)"
+          />
+
+          <div class="imageContainer" *ngIf="imageUrl">
+            <img [src]="imageUrl" alt="Image" />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<ng-template #codeInput>
+  <form [formGroup]="codeForm">
+    <mat-form-field class="form-group">
+      <mat-label for="code">Code:</mat-label>
+      <input
+        matInput
+        type="text"
+        id="code"
+        formControlName="code"
+        autocomplete="off"
+      />
+    </mat-form-field>
+    <button
+      (click)="handleSignUpConfirmation(codeForm.value.code)"
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</ng-template>
+
+<ng-template #login>
+  <form [formGroup]="loginUserForm">
+    <mat-form-field class="form-group">
+      <mat-label for="username">Username:</mat-label>
+      <input
+        matInput
+        id="username"
+        type="text"
+        formControlName="username"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <mat-label for="password">Password:</mat-label>
+      <input
+        matInput
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </form>
+  <button (click)="onLoginUser(loginUserForm.value)" type="submit">
+    Submit
+  </button>
+</ng-template>

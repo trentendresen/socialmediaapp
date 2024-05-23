@@ -1,6 +1,219 @@
-<h1>My Angular App</h1>
-<router-outlet></router-outlet>
-<nav>
-  <a routerLink="/">Home</a>
-  <a routerLink="/login">Login</a>
-</nav>
+<div class="container">
+  <ng-container
+    *ngIf="
+      currentAuthUser && userFromState && notificationsFromState;
+      else loading
+    "
+  >
+    <nav>
+      <!-- Display different nav elements based on user login status -->
+
+      <div class="iconAndSearchContainer">
+        <button
+          (click)="goHome()"
+          class="buttonContainer"
+          mat-icon-button
+          aria-label="flutter_dash icon"
+        >
+          <mat-icon class="homeIcon">flutter_dash</mat-icon>
+        </button>
+
+        <mat-form-field class="form-field">
+          <mat-label>Search </mat-label>
+          <input matInput [(ngModel)]="inputValue" type="text" />
+
+          <button
+            (click)="searchResultsForAll($event)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="iconAndSearchContainerMobile">
+        <button
+          (click)="goHome()"
+          class="buttonContainer"
+          mat-icon-button
+          aria-label="flutter_dash icon"
+        >
+          <mat-icon class="homeIcon">flutter_dash</mat-icon>
+        </button>
+        <button
+          (click)="toggleSearchBar()"
+          class="buttonContainer"
+          mat-icon-button
+          aria-label="search icon"
+        >
+          <mat-icon class="homeIcon">search</mat-icon>
+        </button>
+      </div>
+      <div [class.active]="searchBarVisible" class="searchBarContainer">
+        <button
+          (click)="toggleSearchBar()"
+          mat-icon-button
+          aria-label="Go back"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-form-field class="form-field">
+          <mat-label>Search </mat-label>
+          <input matInput [(ngModel)]="inputValue" type="text" />
+
+          <button
+            (click)="searchResultsForAll($event); toggleSearchBar()"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <a routerLink="/home">Home</a>
+      <!-- Display username and logout button if user is logged in -->
+      <div class="actionButtonContainer">
+        <span
+          matTooltip="Messages"
+          [mat-menu-trigger-for]="messagesMenu"
+          matTooltip="Notifications"
+          class="material-icons md-18"
+          matBadgeColor="warn"
+          matBadge="{{
+            notificationsFromState.length
+              ? notificationsFromState.length.toString()
+              : ''
+          }}"
+        >
+          {{ "message" }}
+        </span>
+
+        <mat-menu #messagesMenu="matMenu">
+          <div class="menuItemContainer">Messages</div>
+        </mat-menu>
+        <span
+          id="notificationButton"
+          matTooltip="Notifications"
+          class="material-icons md-18"
+          matBadgeColor="warn"
+          matBadge="{{
+            notificationsFromState.length
+              ? notificationsFromState.length.toString()
+              : ''
+          }}"
+        >
+          {{ "notifications" }}
+        </span>
+
+        <div
+          class="notificationMenuContainer"
+          [class.active]="notificationMenu"
+        >
+          <div class="notificationMenu">
+            <div><h3>Notifications</h3></div>
+            <mat-divider></mat-divider>
+            <div style="width: 100%">
+              <ng-container *ngFor="let notification of notificationsFromState">
+                <ng-container
+                  *ngTemplateOutlet="
+                    notification.type !== 'FRIEND_REQUEST'
+                      ? notificationItemTemplate
+                      : friendRequest;
+                    context: { $implicit: notification }
+                  "
+                ></ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <img
+          matTooltip="Account"
+          src="{{ userFromState.photoUrl }}"
+          [mat-menu-trigger-for]="accountMenu"
+        />
+        <mat-menu #accountMenu="matMenu">
+          <div class="nameAndImageContainer">
+            <img mat-card-avatar src="{{ userFromState.photoUrl }}" />
+            <span
+              >{{ userFromState.firstName }} {{ userFromState.lastName }}</span
+            >
+          </div>
+          <div (click)="authService.logout()" class="menuItemsContainer">
+            <button
+              class="buttonContainer"
+              mat-icon-button
+              aria-label="notifications"
+            >
+              <mat-icon class="logoutIcon">logout</mat-icon>
+            </button>
+            <span>Logout</span>
+          </div>
+        </mat-menu>
+      </div>
+    </nav>
+    <router-outlet></router-outlet>
+  </ng-container>
+</div>
+
+<ng-template #notificationItemTemplate let-notification>
+  <div class="notificationItem">
+    <!-- Render your notification content here -->
+    <img src="{{ getUserPhotos(notification.senderId) }}" />
+    <span>{{ notification.senderName }} {{ notification.message }}</span>
+    <span
+      (click)="deleteNotification(notification)"
+      class="material-icons md-18"
+    >
+      {{ "delete" }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #friendRequest let-notification>
+  <div class="notificationItemFriendRequest">
+    <!-- Render your notification content here -->
+    <div class="infoContainer">
+      <img src="{{ getUserPhotos(notification.senderId) }}" />
+      <div class="timeAndNameContainer">
+        <p>{{ notification.senderName }} {{ notification.message }}</p>
+        <span>{{ getHowLongAgoTime(notification.createdAt) }}</span>
+      </div>
+    </div>
+
+    <div class="confirmOrDeleteContainer">
+      <button
+        (click)="addFriend(notification)"
+        style="background-color: #0866ff; color: #ffffff"
+        mat-flat-button
+      >
+        Confirm
+      </button>
+      <button
+        (click)="deleteNotification(notification)"
+        style="margin-left: 3%; background-color: #e6e8ea; color: black"
+        mat-flat-button
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div
+    style="
+      align-content: center;
+      display: flex;
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 100%;
+      width: 100%;
+      justify-content: center;
+    "
+  >
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

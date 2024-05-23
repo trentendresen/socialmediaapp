@@ -1,0 +1,61 @@
+<div class="scrolling-container">
+  <!-- Content to be scrolled -->
+  <div class="content" *ngIf="combinedPosts">
+    <div
+      *ngFor="let post of sortedCombinedPosts(); let i = index"
+      [@newPost]="isNewPost(post)"
+    >
+      <div class="cardContainer">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <img
+              (click)="navigateToProfile(post.author.username)"
+              mat-card-avatar
+              src="{{ post.author.photoUrl }}"
+            />
+            <mat-card-title
+              (click)="navigateToProfile(post.author.username)"
+              class="name-card"
+            >
+              {{ post.author.firstName }}
+              {{ post.author.lastName }}</mat-card-title
+            >
+            <mat-card-subtitle>{{
+              formatCreatedAtDate(post.createdAt)
+            }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>
+              {{ post.content }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="cardInfoContainer">
+              <div class="iconContainer">
+                <span
+                  class="material-icons md-18"
+                  [class.liked]="isLiked(post)"
+                >
+                  {{ isLiked(post) ? "favorite" : "favorite_border" }}
+                </span>
+
+                {{ post.likes.length }}
+              </div>
+              <div (click)="openPostDialog(post)" class="commentsContainer">
+                {{ post.comments.length }} comments
+              </div>
+            </div>
+          </mat-card-actions>
+          <mat-divider></mat-divider>
+          <mat-card-actions>
+            <button (click)="toggleLike(post)" mat-button>
+              {{ isLiked(post) ? "REMOVE LIKE" : "LIKE" }}
+            </button>
+            <button (click)="openDialog(post.id)" mat-button>COMMENT</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

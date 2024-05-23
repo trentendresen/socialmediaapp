@@ -1,0 +1,82 @@
+@media only screen and (min-width: 1024px) {
+  .container {
+    display: flex;
+    width: 40%;
+    flex-direction: row;
+    height: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid gray;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+  }
+
+  form {
+    align-self: center;
+    height: 85%;
+    width: 80%;
+    align-items: center;
+    display: flex;
+  }
+
+  textarea {
+    border: 2px solid gray;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    padding: 10px;
+  }
+
+  button {
+    align-self: center;
+  }
+
+  img {
+    height: 99%;
+    width: 15%;
+    border-radius: 50%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+  }
+
+  form {
+    align-self: center;
+    height: 85%;
+    width: 80%;
+    align-items: center;
+    display: flex;
+  }
+
+  textarea {
+    border: 2px solid gray;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    padding: 10px;
+  }
+
+  button {
+    align-self: center;
+  }
+
+  img {
+    height: 99%;
+    width: 15%;
+    border-radius: 50%;
+  }
+}
