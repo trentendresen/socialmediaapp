@@ -31,5 +31,13 @@ export const postsReducer = createReducer(
   on(PostsActions.addFriendsPost, (state, { friendsPost }) => ({
     ...state,
     friendsPost: [...friendsPost, ...state.friendsPost],
+  })),
+  on(PostsActions.removeUserPost, (state, { userPost }) => ({
+    ...state,
+    userPosts: state.userPosts.filter((post) => post.id !== userPost.id),
+  })),
+  on(PostsActions.removeFriendsPost, (state, { friendPost }) => ({
+    ...state,
+    friendsPost: state.friendsPost.filter((post) => post.id !== friendPost.id),
   }))
 );

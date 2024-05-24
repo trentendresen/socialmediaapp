@@ -9,5 +9,7 @@ export const PostsActions = createActionGroup({
     'Add Friends Post': props<{ friendsPost: Post[] }>(),
     'Enter Liked Post': props<{ userPost: Post }>(),
     'Append Friends Post': props<{ friendsPost: Post }>(),
+    'Remove Friends Post': props<{ friendPost: Post }>(),
+    'Remove User Post': props<{ userPost: Post }>(),
   },
 });

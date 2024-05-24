@@ -1,1 +1,12 @@
 <p>profile works!</p>
+<div
+  *ngIf="{
+    userData: userData$ | async,
+    usersPosts
+  } as data"
+>
+  <app-posts
+    [userData]="data.userData"
+    [combinedPosts]="usersPosts"
+  ></app-posts>
+</div>

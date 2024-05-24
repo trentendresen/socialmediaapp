@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   imageLogo = 'assets/logo.png';
   public getHowLongAgoTime = getHowLongAgoTime;
   public inputValue = '';
+  public isLoading = true;
   public searchBarVisible: boolean = false;
   currentAuthUser: Auth.AuthUser | null = null; // Define currentUser as any type or use a specific interface
   private userSubscription!: Subscription;
@@ -271,6 +272,7 @@ export class AppComponent implements OnInit {
   getCurrentUserData = async () => {
     try {
       this.currentAuthUser = await Auth.getCurrentUser();
+
       if (this.currentAuthUser) {
         try {
           const userResponse = await this.client
@@ -288,11 +290,14 @@ export class AppComponent implements OnInit {
               user: userResponse?.data.getUser as unknown as UserType,
             })
           );
+
+          this.isLoading = false;
         } catch (error) {}
       }
     } catch (err) {
       console.error('authenticate Error', err);
       this.currentAuthUser = null;
+      this.isLoading = false;
     }
   };
 }

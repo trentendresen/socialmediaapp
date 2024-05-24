@@ -1,20 +1,21 @@
 <div class="scrolling-container">
   <!-- Content to be scrolled -->
-  <div class="content" *ngIf="combinedPosts">
+  <div class="content" *ngIf="combinedPosts?.length; else noPosts">
     <div
       *ngFor="let post of sortedCombinedPosts(); let i = index"
       [@newPost]="isNewPost(post)"
+      [@deletePost]="isDeleted(post.id)"
     >
       <div class="cardContainer">
         <mat-card class="example-card">
           <mat-card-header>
             <img
-              (click)="navigateToProfile(post.author.username)"
+              (click)="navigateToProfile(post.author.id)"
               mat-card-avatar
               src="{{ post.author.photoUrl }}"
             />
             <mat-card-title
-              (click)="navigateToProfile(post.author.username)"
+              (click)="navigateToProfile(post.author.id)"
               class="name-card"
             >
               {{ post.author.firstName }}
@@ -53,9 +54,22 @@
               {{ isLiked(post) ? "REMOVE LIKE" : "LIKE" }}
             </button>
             <button (click)="openDialog(post.id)" mat-button>COMMENT</button>
+            <button
+              *ngIf="post.authorId === userData?.id"
+              (click)="deletePost(post.id)"
+              mat-button
+            >
+              DELETE
+            </button>
           </mat-card-actions>
         </mat-card>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #noPosts>
+  <div>
+    <p>No posts send a post above</p>
+  </div>
+</ng-template>

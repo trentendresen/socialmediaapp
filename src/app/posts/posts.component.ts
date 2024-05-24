@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { Client, generateClient } from 'aws-amplify/api';
+import { Client, generateClient, post } from 'aws-amplify/api';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -64,6 +64,17 @@ import { Router } from '@angular/router';
         animate('400ms cubic-bezier(.35,0,.25,1)'),
       ]),
     ]),
+    trigger('deletePost', [
+      transition('true => void', [
+        animate(
+          '400ms cubic-bezier(.35,0,.25,1)',
+          style({
+            transform: 'scale(0.8)',
+            opacity: 0,
+          })
+        ),
+      ]),
+    ]),
   ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
@@ -73,6 +84,7 @@ export class PostsComponent implements OnInit {
   @Input() combinedPosts!: Post[] | null;
 
   private newPosts: Post[] = [];
+  private deletedPosts: string[] = [];
   formatCreatedAtDate = formatCreatedAtDate;
   private postsSubscription!: Subscription;
 
@@ -87,6 +99,11 @@ export class PostsComponent implements OnInit {
   ) {
     this.client = generateClient({ authMode: 'apiKey' });
   }
+
+  isDeleted(postId: string): boolean {
+    return this.deletedPosts.includes(postId) ? true : false;
+  }
+
   isNewPost(post: Post): boolean {
     if (this.newPosts.includes(post)) {
       return true;
@@ -96,6 +113,29 @@ export class PostsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.client.graphql({ query: subscriptions.onDeletePost }).subscribe({
+      next: ({ data }) => {
+        this.combinedPosts?.forEach((element) => {
+          if (
+            element.id === data.onDeletePost.id &&
+            element.authorId === this.userData?.id
+          ) {
+            this.store.dispatch(
+              PostsActions.removeUserPost({
+                userPost: element as unknown as Post,
+              })
+            );
+          } else if (element.id === data.onDeletePost.id) {
+            this.store.dispatch(
+              PostsActions.removeFriendsPost({
+                friendPost: element as unknown as Post,
+              })
+            );
+          }
+        });
+      },
+    });
+
     this.client.graphql({ query: subscriptions.onCreatePost }).subscribe({
       next: ({ data }) => {
         if (data.onCreatePost.authorId === this.userData?.id) {
@@ -203,6 +243,18 @@ export class PostsComponent implements OnInit {
       return false;
     }
   }
+
+  deletePost = (postId: string) => {
+    this.deletedPosts.push(postId);
+    this.client.graphql({
+      query: mutations.deletePost,
+      variables: {
+        input: {
+          id: postId,
+        },
+      },
+    });
+  };
 
   toggleLike(post: Post): void {
     let postsFromState: Post[] = [];

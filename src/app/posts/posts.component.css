@@ -4,6 +4,7 @@
   width: 100%; /* Set the width of the container */
   align-items: center;
   display: flex;
+  margin-top: 5%;
   flex-direction: column;
 }
 

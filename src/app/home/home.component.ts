@@ -89,6 +89,7 @@ export class HomeComponent implements OnInit {
 
   combinePosts(usersPosts: Post[] | null, friendsPosts: Post[] | null): Post[] {
     // Combine the usersPosts and friendsPosts arrays into a single array
+
     if (usersPosts && friendsPosts) return [...usersPosts, ...friendsPosts];
     else return [];
   }

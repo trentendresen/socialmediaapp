@@ -1,159 +1,164 @@
 <div class="container">
-  <ng-container
-    *ngIf="
-      currentAuthUser && userFromState && notificationsFromState;
-      else loading
-    "
-  >
-    <nav>
-      <!-- Display different nav elements based on user login status -->
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container
+      *ngIf="
+        !isLoading && userFromState && notificationsFromState && currentAuthUser
+      "
+    >
+      <nav>
+        <!-- Display different nav elements based on user login status -->
 
-      <div class="iconAndSearchContainer">
-        <button
-          (click)="goHome()"
-          class="buttonContainer"
-          mat-icon-button
-          aria-label="flutter_dash icon"
-        >
-          <mat-icon class="homeIcon">flutter_dash</mat-icon>
-        </button>
-
-        <mat-form-field class="form-field">
-          <mat-label>Search </mat-label>
-          <input matInput [(ngModel)]="inputValue" type="text" />
-
+        <div class="iconAndSearchContainer">
           <button
-            (click)="searchResultsForAll($event)"
-            matSuffix
+            (click)="goHome()"
+            class="buttonContainer"
             mat-icon-button
-            aria-label="Clear"
+            aria-label="flutter_dash icon"
           >
-            <mat-icon>search</mat-icon>
+            <mat-icon class="homeIcon">flutter_dash</mat-icon>
           </button>
-        </mat-form-field>
-      </div>
-      <div class="iconAndSearchContainerMobile">
-        <button
-          (click)="goHome()"
-          class="buttonContainer"
-          mat-icon-button
-          aria-label="flutter_dash icon"
-        >
-          <mat-icon class="homeIcon">flutter_dash</mat-icon>
-        </button>
-        <button
-          (click)="toggleSearchBar()"
-          class="buttonContainer"
-          mat-icon-button
-          aria-label="search icon"
-        >
-          <mat-icon class="homeIcon">search</mat-icon>
-        </button>
-      </div>
-      <div [class.active]="searchBarVisible" class="searchBarContainer">
-        <button
-          (click)="toggleSearchBar()"
-          mat-icon-button
-          aria-label="Go back"
-        >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <mat-form-field class="form-field">
-          <mat-label>Search </mat-label>
-          <input matInput [(ngModel)]="inputValue" type="text" />
 
+          <mat-form-field class="form-field">
+            <mat-label>Search </mat-label>
+            <input matInput [(ngModel)]="inputValue" type="text" />
+
+            <button
+              (click)="searchResultsForAll($event)"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="iconAndSearchContainerMobile">
           <button
-            (click)="searchResultsForAll($event); toggleSearchBar()"
-            matSuffix
+            (click)="goHome()"
+            class="buttonContainer"
             mat-icon-button
-            aria-label="Clear"
+            aria-label="flutter_dash icon"
           >
-            <mat-icon>search</mat-icon>
+            <mat-icon class="homeIcon">flutter_dash</mat-icon>
           </button>
-        </mat-form-field>
-      </div>
-      <a routerLink="/home">Home</a>
-      <!-- Display username and logout button if user is logged in -->
-      <div class="actionButtonContainer">
-        <span
-          matTooltip="Messages"
-          [mat-menu-trigger-for]="messagesMenu"
-          matTooltip="Notifications"
-          class="material-icons md-18"
-          matBadgeColor="warn"
-          matBadge="{{
-            notificationsFromState.length
-              ? notificationsFromState.length.toString()
-              : ''
-          }}"
-        >
-          {{ "message" }}
-        </span>
+          <button
+            (click)="toggleSearchBar()"
+            class="buttonContainer"
+            mat-icon-button
+            aria-label="search icon"
+          >
+            <mat-icon class="homeIcon">search</mat-icon>
+          </button>
+        </div>
+        <div [class.active]="searchBarVisible" class="searchBarContainer">
+          <button
+            (click)="toggleSearchBar()"
+            mat-icon-button
+            aria-label="Go back"
+          >
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <mat-form-field class="form-field">
+            <mat-label>Search </mat-label>
+            <input matInput [(ngModel)]="inputValue" type="text" />
 
-        <mat-menu #messagesMenu="matMenu">
-          <div class="menuItemContainer">Messages</div>
-        </mat-menu>
-        <span
-          id="notificationButton"
-          matTooltip="Notifications"
-          class="material-icons md-18"
-          matBadgeColor="warn"
-          matBadge="{{
-            notificationsFromState.length
-              ? notificationsFromState.length.toString()
-              : ''
-          }}"
-        >
-          {{ "notifications" }}
-        </span>
+            <button
+              (click)="searchResultsForAll($event); toggleSearchBar()"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <a routerLink="/home">Home</a>
+        <!-- Display username and logout button if user is logged in -->
+        <div class="actionButtonContainer">
+          <span
+            matTooltip="Messages"
+            [mat-menu-trigger-for]="messagesMenu"
+            matTooltip="Notifications"
+            class="material-icons md-18"
+            matBadgeColor="warn"
+            matBadge="{{
+              notificationsFromState.length
+                ? notificationsFromState.length.toString()
+                : ''
+            }}"
+          >
+            {{ "message" }}
+          </span>
 
-        <div
-          class="notificationMenuContainer"
-          [class.active]="notificationMenu"
-        >
-          <div class="notificationMenu">
-            <div><h3>Notifications</h3></div>
-            <mat-divider></mat-divider>
-            <div style="width: 100%">
-              <ng-container *ngFor="let notification of notificationsFromState">
+          <mat-menu #messagesMenu="matMenu">
+            <div class="menuItemContainer">Messages</div>
+          </mat-menu>
+          <span
+            id="notificationButton"
+            matTooltip="Notifications"
+            class="material-icons md-18"
+            matBadgeColor="warn"
+            matBadge="{{
+              notificationsFromState.length
+                ? notificationsFromState.length.toString()
+                : ''
+            }}"
+          >
+            {{ "notifications" }}
+          </span>
+
+          <div
+            class="notificationMenuContainer"
+            [class.active]="notificationMenu"
+          >
+            <div class="notificationMenu">
+              <div><h3>Notifications</h3></div>
+              <mat-divider></mat-divider>
+              <div style="width: 100%">
                 <ng-container
-                  *ngTemplateOutlet="
-                    notification.type !== 'FRIEND_REQUEST'
-                      ? notificationItemTemplate
-                      : friendRequest;
-                    context: { $implicit: notification }
-                  "
-                ></ng-container>
-              </ng-container>
+                  *ngFor="let notification of notificationsFromState"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      notification.type !== 'FRIEND_REQUEST'
+                        ? notificationItemTemplate
+                        : friendRequest;
+                      context: { $implicit: notification }
+                    "
+                  ></ng-container>
+                </ng-container>
+              </div>
             </div>
           </div>
-        </div>
 
-        <img
-          matTooltip="Account"
-          src="{{ userFromState.photoUrl }}"
-          [mat-menu-trigger-for]="accountMenu"
-        />
-        <mat-menu #accountMenu="matMenu">
-          <div class="nameAndImageContainer">
-            <img mat-card-avatar src="{{ userFromState.photoUrl }}" />
-            <span
-              >{{ userFromState.firstName }} {{ userFromState.lastName }}</span
-            >
-          </div>
-          <div (click)="authService.logout()" class="menuItemsContainer">
-            <button
-              class="buttonContainer"
-              mat-icon-button
-              aria-label="notifications"
-            >
-              <mat-icon class="logoutIcon">logout</mat-icon>
-            </button>
-            <span>Logout</span>
-          </div>
-        </mat-menu>
-      </div>
-    </nav>
+          <img
+            matTooltip="Account"
+            src="{{ userFromState.photoUrl }}"
+            [mat-menu-trigger-for]="accountMenu"
+          />
+          <mat-menu #accountMenu="matMenu">
+            <div class="nameAndImageContainer">
+              <img mat-card-avatar src="{{ userFromState.photoUrl }}" />
+              <span
+                >{{ userFromState.firstName }}
+                {{ userFromState.lastName }}</span
+              >
+            </div>
+            <div (click)="authService.logout()" class="menuItemsContainer">
+              <button
+                class="buttonContainer"
+                mat-icon-button
+                aria-label="notifications"
+              >
+                <mat-icon class="logoutIcon">logout</mat-icon>
+              </button>
+              <span>Logout</span>
+            </div>
+          </mat-menu>
+        </div>
+      </nav>
+    </ng-container>
+
     <router-outlet></router-outlet>
   </ng-container>
 </div>
