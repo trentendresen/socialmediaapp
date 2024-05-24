@@ -42,7 +42,7 @@ testem.log
 Thumbs.db
 
 **/environment.ts
-**/.env
+.env
 
 # .NET
 project.lock.json
