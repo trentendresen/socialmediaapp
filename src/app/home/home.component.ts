@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 
+import { AwsServiceService } from '../services/awsservice.service';
 import * as mutations from '../../graphql/mutations';
 import * as queries from '../../graphql/queries';
 import { Post, User } from 'src/API';
@@ -51,7 +52,8 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder,
     router: Router,
     private storeService: StoreService,
-    private store: Store
+    private store: Store,
+    private aws: AwsServiceService
   ) {
     this.router = router;
 
@@ -68,6 +70,22 @@ export class HomeComponent implements OnInit {
       console.error('error fetching posts', e);
     }
   }
+
+  onFileSelected = async (event: any) => {
+    let imageUrl = '';
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+    this.aws.putObjectIntoBucket(
+      selectedFile,
+      '080f2496-cad6-44b3-a8c6-9b4dba786cc5'
+    );
+  };
 
   combinePosts(usersPosts: Post[] | null, friendsPosts: Post[] | null): Post[] {
     // Combine the usersPosts and friendsPosts arrays into a single array

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import AWS from 'aws-sdk';
-import { AuthService } from './AuthService';
-import * as fs from 'fs';
 import { HttpClient } from '@angular/common/http';
+
+import { environment } from '../../environment/environment';
+import { AuthService } from './AuthService';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +13,17 @@ export class AwsServiceService {
   private readonly awsConfig: AWS.Config;
   constructor(private authService: AuthService, private http: HttpClient) {
     this.awsConfig = new AWS.Config({
-      region: 'us-east-1', // Replace with your bucket's region
+      region: environment.region, // Replace with your bucket's region
       credentials: {
-        accessKeyId: 'AKIATGRJQPSZARBDTOIA', // Replace with your AWS access key ID
-        secretAccessKey: '/iw/sgFuNDblWP90TQJ2Y5S1A0zoh+h0htNLGcfK',
+        accessKeyId: environment.accessKeyID, // Replace with your AWS access key ID
+        secretAccessKey: environment.secretAccessKey,
       },
     });
   }
   public async listS3Buckets() {
     const s3 = new AWS.S3(this.awsConfig);
     const params: AWS.S3.ListObjectsV2Request = {
-      Bucket: 'amplify-socialmediaapp-dev-201218-deployment',
+      Bucket: environment.bucketName,
     };
     const fileBlob = await this.http
       .get('assets/image.png', { responseType: 'blob' })

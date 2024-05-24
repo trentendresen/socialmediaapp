@@ -41,6 +41,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
+**/environment.ts
+
 # .NET
 project.lock.json
 project.fragment.lock.json
