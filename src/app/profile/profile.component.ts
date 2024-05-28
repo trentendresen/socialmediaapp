@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.profileId = params.get('id');
     });
+
     this.userData$ = this.storeService.getUserData();
 
     const response = await this.client.graphql({

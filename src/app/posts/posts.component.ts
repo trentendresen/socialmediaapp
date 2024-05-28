@@ -18,19 +18,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { formatCreatedAtDate } from '../helpers/dateHelpers';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 import * as subscriptions from '../../graphql/subscriptions';
 import { User as UserType } from '../types/users';
-
 import { selectUserPosts } from '../selectors/posts.selectors';
 import { Post } from 'src/API';
 import { PostsActions } from '../actions/posts.actions';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
-import { Router } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-posts',
@@ -46,6 +46,7 @@ import { Router } from '@angular/router';
     FormsModule,
     NgIf,
     CommonModule,
+    MatProgressSpinnerModule,
   ],
   animations: [
     trigger('newPost', [
@@ -82,7 +83,8 @@ import { Router } from '@angular/router';
 export class PostsComponent implements OnInit {
   @Input() userData!: UserType | null;
   @Input() combinedPosts!: Post[] | null;
-
+  @Input() isProfile!: boolean;
+  public isLoading = true;
   private newPosts: Post[] = [];
   private deletedPosts: string[] = [];
   formatCreatedAtDate = formatCreatedAtDate;
@@ -190,7 +192,7 @@ export class PostsComponent implements OnInit {
       });
 
     this.store.pipe(select(selectUserPosts)).subscribe((posts) => {
-      if (posts.length && this.dialogRef && this.dialogRef.componentInstance) {
+      if (posts?.length && this.dialogRef && this.dialogRef.componentInstance) {
         const updatedPost = posts.find(
           (post) => this.dialogRef?.componentInstance.data.post.id === post.id
         );
@@ -205,13 +207,14 @@ export class PostsComponent implements OnInit {
     });
   }
 
-  navigateToProfile = (userName: string) => {
-    this.router.navigate([`/profile/${userName}`]);
+  navigateToProfile = (userId: string) => {
+    this.router.navigate([`/profile/${userId}`]);
   };
 
   sortedCombinedPosts(): Post[] {
     if (this.combinedPosts)
       return this.combinedPosts.sort((a, b) => {
+        this.isLoading = false;
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
@@ -257,7 +260,7 @@ export class PostsComponent implements OnInit {
   };
 
   toggleLike(post: Post): void {
-    let postsFromState: Post[] = [];
+    let postsFromState: Post[] | null = [];
     this.store.pipe(select(selectUserPosts)).subscribe((post) => {
       postsFromState = post;
     });

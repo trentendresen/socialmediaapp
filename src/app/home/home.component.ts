@@ -43,8 +43,8 @@ import {
 })
 export class HomeComponent implements OnInit {
   public userData$!: Observable<UserType | null>;
-  public usersPosts$!: Observable<Post[]>;
-  public friendsPost$!: Observable<Post[]>;
+  public usersPosts$!: Observable<Post[] | null>;
+  public friendsPost$!: Observable<Post[] | null>;
   public client: Client;
   public displayPosts: Post[] = [];
   public router: Router;

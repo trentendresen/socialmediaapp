@@ -139,7 +139,7 @@
           <mat-menu #accountMenu="matMenu">
             <div class="nameAndImageContainer">
               <img mat-card-avatar src="{{ userFromState.photoUrl }}" />
-              <span
+              <span (click)="navigateToProfile(userFromState.id)"
                 >{{ userFromState.firstName }}
                 {{ userFromState.lastName }}</span
               >

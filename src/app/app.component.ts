@@ -95,21 +95,28 @@ export class AppComponent implements OnInit {
               userPosts: response.data.getPostsByUser as unknown as Post[],
             })
           );
-
-          this.userFromState.friends.forEach(async (friend) => {
+          let friendsArray: Post[] = [];
+          const promises = this.userFromState.friends.map(async (friend) => {
             const response = await this.client.graphql({
               query: queries.getPostsByUser,
               variables: {
                 authorId: friend,
               },
             });
+            return response.data.getPostsByUser as unknown as Post[];
+          });
+          try {
+            const friendsPosts = await Promise.all(promises);
+            friendsArray = friendsPosts.flat(); // Flatten the array of arrays into a single array
 
             this.store.dispatch(
               PostsActions.addFriendsPost({
-                friendsPost: response.data.getPostsByUser as unknown as Post[],
+                friendsPost: friendsArray,
               })
             );
-          });
+          } catch (error) {
+            console.error('Error fetching friends posts:', error);
+          }
         }
       });
     this.userSubscription = this.store
@@ -161,6 +168,10 @@ export class AppComponent implements OnInit {
 
   toggleSearchBar = () => {
     this.searchBarVisible = !this.searchBarVisible;
+  };
+
+  navigateToProfile = (userId: string) => {
+    this.router.navigate([`/profile/${userId}`]);
   };
 
   deleteNotification = async (notification: Notification) => {

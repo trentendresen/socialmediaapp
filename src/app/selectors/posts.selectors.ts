@@ -11,5 +11,5 @@ export const selectUserPosts = createSelector(
 
 export const selectFriendsPost = createSelector(
   selectPostsState,
-  (state: PostsState) => state.friendsPost
+  (state: PostsState) => state.friendsPosts
 );

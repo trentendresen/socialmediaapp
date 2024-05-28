@@ -5,39 +5,45 @@ import { Post } from 'src/API';
 import { PostsActions } from '../actions/posts.actions';
 
 export interface PostsState {
-  userPosts: Post[];
-  friendsPost: Post[];
+  userPosts: Post[] | null;
+  friendsPosts: Post[] | null;
 }
 
 export const initialState: PostsState = {
-  userPosts: [],
-  friendsPost: [],
+  userPosts: null,
+  friendsPosts: null,
 };
 
 export const postsReducer = createReducer(
   initialState,
   on(PostsActions.addUserPosts, (state, { userPosts }) => ({
     ...state,
-    userPosts: orderBy(userPosts, 'createdAt', 'desc'), // Assign the user object to the user state property
+    userPosts: orderBy(userPosts, 'createdAt', 'desc'), // Ensure userPosts is sorted
   })),
   on(PostsActions.appendUserPosts, (state, { userPost }) => ({
     ...state,
-    userPosts: [userPost, ...state.userPosts], // If state.userPosts is null or undefined, initialize a new array with userPost
+    userPosts: state.userPosts ? [userPost, ...state.userPosts] : [userPost], // Handle null case
   })),
   on(PostsActions.appendFriendsPost, (state, { friendsPost }) => ({
     ...state,
-    userPosts: [friendsPost, ...state.friendsPost], // If state.userPosts is null or undefined, initialize a new array with userPost
+    friendsPosts: state.friendsPosts
+      ? [friendsPost, ...state.friendsPosts]
+      : [friendsPost], // Handle null case
   })),
   on(PostsActions.addFriendsPost, (state, { friendsPost }) => ({
     ...state,
-    friendsPost: [...friendsPost, ...state.friendsPost],
+    friendsPosts: orderBy(friendsPost, 'createdAt', 'desc'), // Ensure friendsPosts is sorted
   })),
   on(PostsActions.removeUserPost, (state, { userPost }) => ({
     ...state,
-    userPosts: state.userPosts.filter((post) => post.id !== userPost.id),
+    userPosts: state.userPosts
+      ? state.userPosts.filter((post) => post.id !== userPost.id)
+      : null, // Handle null case
   })),
   on(PostsActions.removeFriendsPost, (state, { friendPost }) => ({
     ...state,
-    friendsPost: state.friendsPost.filter((post) => post.id !== friendPost.id),
+    friendsPosts: state.friendsPosts
+      ? state.friendsPosts.filter((post) => post.id !== friendPost.id)
+      : null, // Handle null case
   }))
 );

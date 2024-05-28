@@ -1,5 +1,4 @@
 <div class="scrolling-container">
-  <!-- Content to be scrolled -->
   <div class="content" *ngIf="combinedPosts?.length; else noPosts">
     <div
       *ngFor="let post of sortedCombinedPosts(); let i = index"
@@ -70,6 +69,9 @@
 
 <ng-template #noPosts>
   <div>
-    <p>No posts send a post above</p>
+    <p *ngIf="isProfile; else sendPostMessage">The user has not sent a post.</p>
+    <ng-template #sendPostMessage>
+      <p>No posts. Send a post above.</p>
+    </ng-template>
   </div>
 </ng-template>

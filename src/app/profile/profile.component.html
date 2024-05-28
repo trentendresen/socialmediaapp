@@ -1,12 +1,9 @@
-<p>profile works!</p>
-<div
-  *ngIf="{
-    userData: userData$ | async,
-    usersPosts
-  } as data"
->
-  <app-posts
-    [userData]="data.userData"
-    [combinedPosts]="usersPosts"
-  ></app-posts>
-</div>
+<ng-container *ngIf="userData$ | async as userData">
+  <ng-container *ngIf="userData && usersPosts">
+    <app-posts
+      [isProfile]="true"
+      [userData]="userData"
+      [combinedPosts]="usersPosts"
+    ></app-posts>
+  </ng-container>
+</ng-container>
